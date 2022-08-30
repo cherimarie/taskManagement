@@ -46,12 +46,12 @@ TASK-TAG
 
 CHANGE
   - identifier - unique id
-  - taskChangeId - foreign key
+  - taskEventId - foreign key
   - fieldName - string
   - newValue - text (TODO: point this to a previous ChangeId rather than have it be raw text)
   - previousValue - text
 
-TASK-CHANGE
+EVENT
   - identifier - unique id
   - taskId - foreign key
   - userId - foreign key

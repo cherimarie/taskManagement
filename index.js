@@ -8,75 +8,90 @@ const Change = require("./modules/change")
 const Comment = require("./modules/comment")
 const State = require("./modules/state")
 const Task = require("./modules/task")
-const TaskChange = require("./modules/taskChange")
+const Event = require("./modules/event")
 const User = require("./modules/user")
+const db = require("./modules/database")
 
 app.use(bodyParser.json())
 
+// For debugging purposes
+app.get('/dataDump', (req, res)=>{
+  res.status(200).json(db.dump())
+})
+
 // Comments
 app.post('/comments', (req, res)=>{
-  Comment.create(req.body)
-  res.status(200).send()
+  const response = Comment.create(req.body)
+  res.status(200).json(response)
 })
 
 app.delete('/comments/:id', (req, res)=>{
-  Comment.delete(req.params.id)
-  res.status(200).send()
+  const response = Comment.delete(req.params.id)
+  res.status(200).json(response)
 })
 
 // States
 app.get('/states', (req, res)=>{
-  res.status(200).json(State.getAll()).send()
+  const response = State.getAll()
+  res.status(200).json(response)
 })
 
 // Tags
 app.get('/tags', (req, res)=>{
-  res.status(200).json(Tag.getAll()).send()
+  const response = Tag.getAll()
+  res.status(200).json()
 })
 
 app.post('/tags', (req, res)=>{
-  Tag.create(req.body)
-  res.status(200).send()
+  const response = Tag.create(req.body)
+  res.status(200).json(response)
 })
 
 // Tasks
 app.get('/tasks', (req, res)=>{
-  res.status(200).json(Task.search(req.query)).send()
+  const response = Task.search(req.query)
+  res.status(200).json(response)
 })
 
 app.put('/tasks/:id', (req, res)=>{
-  Task.edit(req.params.id, req.body)
-  res.status(200).send()
+  const response = Task.edit(req.params.id, req.body)
+  res.status(200).json(response)
 })
 
 app.post('/tasks', (req, res)=>{
-  Task.create(req.body)
-  res.status(200).send()
+  const response = Task.create(req.body)
+  res.status(200).json(response)
 })
 
 app.get('/tasks/:id/tags', (req, res)=>{
-  res.status(200).json(Task.getAllTags(req.params.id)).send()
+  const response = Task.getAllTags(req.params.id)
+  res.status(200).json(response)
 })
 
 app.get('/tasks/:id/comments', (req, res)=>{
-  res.status(200).json(Task.getAllComments(req.params.id)).send()
+  const response = Task.getAllComments(req.params.id)
+  res.status(200).json(response)
 })
 
-app.get('/tasks/:id/taskchanges', (req, res)=>{
-  res.status(200).json(Task.getAllTaskChanges(req.params.id)).send()
+app.get('/tasks/:id/events', (req, res)=>{
+  const response = Task.getAllEvents(req.params.id)
+  res.status(200).json(response)
 })
 
 // Users
 app.get('/users', (req, res) => {
-  res.send(User.getAll())
+  const response = User.getAll()
+  res.json(response)
 })
 
 app.get('/users/:id', (req, res) => {
-  res.send(User.getById(req.params.id))
+  const response = User.getById(req.params.id)
+  res.json(response)
 })
 
 app.get('/users/:id/tasks', (req, res) => {
-  res.send(User.getAssignedTasks(req.params.id))
+  const response = User.getAssignedTasks(req.params.id)
+  res.json(response)
 })
 
 // 404 catcher
